@@ -12,24 +12,21 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function encodeLine(str) {
   str = str.split('')
-  const map = new Map()
   let result = []
+  let count = 1
   for (let i = 0; i < str.length; i++) {
-    if (map.has(str[i])) {
-      map.set(str[i], map.get(str[i]) + 1)
+    if (str[i] === str[i + 1]) {
+      str[i] = str[i + 1]
+      count++
     } else {
-      map.set(str[i], 1)
+      if (count === 1) {
+          result.push(str[i]) 
+      } else {
+          result.push(`${count}${str[i]}`)
+      }
+      count = 1
     }
   }
-  const newObj = Object.fromEntries(map.entries())
-  for (const [key, value] of Object.entries(newObj)) {
-    if (value > 1) {
-      result.push(`${value}${key}`)
-    } else {
-      result.push(`${key}`)
-    }
-  }
-
   return result.join('')
 }
 
